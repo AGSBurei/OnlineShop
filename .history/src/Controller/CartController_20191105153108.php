@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use App\Service\Cart\CartService;
+use SessionIdInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
@@ -16,7 +20,7 @@ class CartController extends AbstractController
        
         return $this->render('cart/index.html.twig', [
             'items' => $cartService->getFullCart(),
-            'total' => $cartService->getTotal()
+            'total' => $cartService->getFullCart()
         ]);
 
     }

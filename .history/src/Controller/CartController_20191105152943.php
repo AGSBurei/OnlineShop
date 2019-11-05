@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use App\Service\Cart\CartService;
+use SessionIdInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
@@ -13,10 +17,18 @@ class CartController extends AbstractController
      */
     public function index(CartService $cartService)
     {
-       
+        $panierWithData = $cartService->getFullCart();
+
+        $total = $cartService->getTotal();
+
+        foreach($panierWithData as $item){
+            $totalItem = $item['product']->getPrice() * $item['quantity'];
+            $total += $totalItem;
+        }
+
         return $this->render('cart/index.html.twig', [
-            'items' => $cartService->getFullCart(),
-            'total' => $cartService->getTotal()
+            'items' => $panierWithData,
+            'total' => $total
         ]);
 
     }
