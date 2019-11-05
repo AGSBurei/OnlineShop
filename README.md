@@ -1,4 +1,4 @@
-# cours-symfony-session-panier
+# PPE
 EXO ppe shop en ligne
 
 # Fonction
