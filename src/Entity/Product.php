@@ -36,15 +36,6 @@ class Product
      */
     private $reference;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $stock;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $viewCorrection;
 
     public function getId(): ?int
     {
@@ -111,15 +102,4 @@ class Product
         return $this;
     }
 
-    public function getViewCorrection(): ?bool
-    {
-        return $this->viewCorrection;
-    }
-
-    public function setViewCorrection(bool $viewCorrection): self
-    {
-        $this->viewCorrection = $viewCorrection;
-
-        return $this;
-    }
 }
