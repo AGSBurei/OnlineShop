@@ -4,29 +4,88 @@
 {% endblock %}
 
 {% block body %}
-    <div class="bg-light p-3">
-        <h1>Les produits</h1>
-    </div>
+<div class="barside">
+            <div class="container-fluid">
+                <div class="row">
+                    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                        <div class="sidebar-sticky">
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                    <span>Sous-menu</span>
+                                </h6>
+                                <ul class="nav flex-column">
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">
+                                            accueil
+                                        </a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">
+                                            item 2
+                                        </a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">
+                                            item 3
+                                        </a>
+                                    </li>
+                                </ul>
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                    <span>Accès  rapide</span>
+                                </h6>
+                                   <ul class="nav flex-column">
+                                        <li class="nav-item"> 
+                                            <a class="nav-link" href="#">
+                                                item 1
+                                            </a>
+                                        </li>
+                                        <li class="nav-item"> 
+                                            <a class="nav-link" href="#">
+                                                item 2
+                                            </a>
+                                        </li>
+                                        <li class="nav-item"> 
+                                            <a class="nav-link" href="#">
+                                                item 3
+                                            </a>
+                                        </li>
+                                    </ul>
+                        </div>
+                    </nav>
+                    
+                    <div class="main">
 
-    <div class="row">
-        {% for product in products %}
-            <div class="col-4 mt-4">
-                <div class="border border-dark rounded p-2 clearfix">
-                    <h2>
-                        {{ product.title }}
-                        -
-                        {{ product.price }}
-                        €
-                    </h2>
-                    <img class="img-fluid rounded" src="{{ product.image }}" alt="Image de {{ product.title }}">
-                    <hr>
-                    <a href="{{ path('cart_add', {'id': product.id }) }}" class="btn btn-success float-right">
-                        <i class="fas fa-shopping-cart mr-1"></i>
-                        Ajouter
-                    </a>
+                                        <div class="bg-light p-3">
+                        <h1>Les produits</h1>
+                    </div>
+
+                    <div class="row">
+                        {% for product in products %}
+                            <div class="col-4 mt-4">
+                                <div class="border border-dark rounded p-2 clearfix">
+                                    <h2>
+                                        {{ product.title }}
+                                        -
+                                        {{ product.price }}
+                                        €
+                                    </h2>
+                                    <img class="img-fluid rounded" src="{{ product.image }}" alt="Image de {{ product.title }}">
+                                    <hr>
+                                    <a href="{{ path('cart_add', {'id': product.id }) }}" class="btn btn-success float-right">
+                                        <i class="fas fa-shopping-cart mr-1"></i>
+                                        Ajouter
+                                    </a>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+
+
+
+                    </div>
+                    <!---->
+                    </div>
                 </div>
-
             </div>
-        {% endfor %}
-    </div>
+
 {% endblock %}

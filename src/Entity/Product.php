@@ -31,6 +31,21 @@ class Product
      */
     private $price;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $reference;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $stock;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $viewCorrection;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +83,42 @@ class Product
     public function setPrice(float $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getViewCorrection(): ?bool
+    {
+        return $this->viewCorrection;
+    }
+
+    public function setViewCorrection(bool $viewCorrection): self
+    {
+        $this->viewCorrection = $viewCorrection;
 
         return $this;
     }
