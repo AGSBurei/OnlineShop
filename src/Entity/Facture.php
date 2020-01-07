@@ -29,14 +29,15 @@ class Facture
     private $date;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderList", mappedBy="facture")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Product")
      */
-    private $orderlists;
+    private $products;
 
     public function __construct()
     {
-        $this->orderlists = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -68,33 +69,29 @@ class Facture
     }
 
     /**
-     * @return Collection|OrderList[]
+     * @return Collection|Product[]
      */
-    public function getOrderlists(): Collection
+    public function getProducts(): Collection
     {
-        return $this->orderlists;
+        return $this->products;
     }
 
-    public function addOrderlist(OrderList $orderlist): self
+    public function addProduct(Product $product): self
     {
-        if (!$this->orderlists->contains($orderlist)) {
-            $this->orderlists[] = $orderlist;
-            $orderlist->setFacture($this);
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
         }
 
         return $this;
     }
 
-    public function removeOrderlist(OrderList $orderlist): self
+    public function removeProduct(Product $product): self
     {
-        if ($this->orderlists->contains($orderlist)) {
-            $this->orderlists->removeElement($orderlist);
-            // set the owning side to null (unless already changed)
-            if ($orderlist->getFacture() === $this) {
-                $orderlist->setFacture(null);
-            }
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
         }
 
         return $this;
     }
+
 }

@@ -64,7 +64,7 @@ class Product
     private $shape;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Style", mappedBy="products")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Style", inversedBy="products")
      */
     private $styles;
 
@@ -73,16 +73,7 @@ class Product
      */
     private $mountType;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\OrderList", mappedBy="products")
-     */
-    private $orderLists;
-
-    public function __construct()
-    {
-        $this->styles = new ArrayCollection();
-        $this->orderLists = new ArrayCollection();
-    }
+    
 
 
     public function getId(): ?int
@@ -250,32 +241,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|OrderList[]
-     */
-    public function getOrderLists(): Collection
-    {
-        return $this->orderLists;
-    }
-
-    public function addOrderList(OrderList $orderList): self
-    {
-        if (!$this->orderLists->contains($orderList)) {
-            $this->orderLists[] = $orderList;
-            $orderList->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderList(OrderList $orderList): self
-    {
-        if ($this->orderLists->contains($orderList)) {
-            $this->orderLists->removeElement($orderList);
-            $orderList->removeProduct($this);
-        }
-
-        return $this;
-    }
+   
 
 }

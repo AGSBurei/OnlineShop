@@ -50,6 +50,7 @@ class CartService {
             $panierWithData[] = [
                 'product' => $this->productRepository->find($id),
                 'quantity' => $quantity
+                
             ];
         }
         return $panierWithData;

@@ -24,7 +24,7 @@ class Style
     private $label;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="styles")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="styles")
      */
     private $products;
 
