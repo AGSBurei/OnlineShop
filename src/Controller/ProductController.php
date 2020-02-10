@@ -2,37 +2,45 @@
 
 namespace App\Controller;
 
-use App\Repository\ProductRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Product;
-use App\Entity\Gender;
+use App\Data\ItemSearch;
 use App\Entity\Brand;
-use App\Entity\Material;
 use App\Entity\Color;
+use App\Entity\Mount;
 use App\Entity\Shape;
-use App\Entity\MountType;
 use App\Entity\Style;
+use App\Entity\Gender;
+use App\Entity\Product;
+use App\Entity\Material;
+use App\Entity\MountType;
 use App\Form\AddItemType;
+use App\Form\AddBrandType;
 use App\Form\AddColorType;
-use App\Form\AddGenderType;
-use App\Form\AddMaterialType;
-use App\Form\AddMountTypeType;
 use App\Form\AddShapeType;
 use App\Form\AddStyleType;
-use App\Form\AddBrandType;
+use App\Form\AddGenderType;
+use App\Form\AddMaterialType;
+use App\Form\AddMountType;
+use App\Form\SearchForm;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
 {
     /**
      * @Route("/", name="product_index")
      */
-    public function index(ProductRepository $productRepository)
+    public function index(ProductRepository $productRepository, Request $request)
     {
+        $data = new ItemSearch();
+        $form = $this->createForm(SearchForm::class, $data);
+        $form-> handleRequest($request);
+        $products = $productRepository->findSearch($data);
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll()
+            'products' => $products,
+            'form' => $form->createView()
         ]);
     }
 
@@ -44,9 +52,19 @@ class ProductController extends AbstractController
         $product = new Product();
         $form = $this ->createForm(AddItemType::class, $product);
         $form->handleRequest($request);
-
-        if($form->isSubmited()&& $form->isValid())
+        
+        if($form->isSubmitted()&& $form->isValid())
         {
+            $product->setGender($form["gender"]->getData());
+            $product->setBrand($form["brand"]->getData());
+            $product->setMaterial($form["material"]->getData());
+            $product->setColor($form["color"]->getData());
+            $product->setStyle($form["style"]->getData());
+            $product->setMount($form["mount"]->getData());
+            $product->setShape($form["shape"]->getData());
+
+
+
             $manager->persist($product);
             $manager->flush();
         }
@@ -64,7 +82,7 @@ class ProductController extends AbstractController
         $form = $this ->createForm(AddBrandType::class, $brand);
         $form->handleRequest($request);
 
-        if($form->isSubmited()&& $form->isValid())
+        if($form->isSubmitted()&& $form->isValid())
         {
             $manager->persist($brand);
             $manager->flush();
@@ -75,7 +93,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/addColor", name="Colo_add")
+     * @Route("/addColor", name="colo_add")
      */
     public function addColor(Request $request, EntityManagerInterface $manager)
     {
@@ -83,7 +101,7 @@ class ProductController extends AbstractController
         $form = $this ->createForm(AddColorType::class, $color);
         $form->handleRequest($request);
 
-        if($form->isSubmited() && $form->isValid())
+        if($form->isSubmitted() && $form->isValid())
         {
             $manager->persist($color);
             $manager->flush();
@@ -94,7 +112,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/addGender", name="Gender_add")
+     * @Route("/addGender", name="gender_add")
      */
     public function addGender(Request $request, EntityManagerInterface $manager)
     {
@@ -102,7 +120,7 @@ class ProductController extends AbstractController
         $form = $this ->createForm(AddGenderType::class, $gender);
         $form->handleRequest($request);
         
-        if($form->isSubmited() && $form->isValid())
+        if($form->isSubmitted() && $form->isValid())
         {
             $manager->persist($gender);
             $manager->flush();
@@ -113,15 +131,15 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/addMaterial", name="Material_add")
+     * @Route("/addMaterial", name="material_add")
      */
-    public function addMaterial(Request $Request, EntityManagerInterface $manager)
+    public function addMaterial(Request $request, EntityManagerInterface $manager)
     {
         $material = new Material();
         $form = $this ->createForm(AddMaterialType::class, $material);
         $form ->handleRequest($request);
         
-        if($form->isSubmited() && $form->isValid())
+        if($form->isSubmitted() && $form->isValid())
         {
             $manager->persist($material);
             $manager->flush();
@@ -131,27 +149,10 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/addMountType", name="MountType_add")
-     */
-    public function addMount(Request $Request, EntityManagerInterface $manager)
-    {
-        $mount = new MountTypeType();
-        $form = $this ->createForm(AddMountTypeTypes::class, $mountType);
-        $form ->handleRequest($request);
-
-        if($form->isSubmited() && $form->isValid())
-        {
-            $manager->persist($mountType);
-            $manager->flush();
-        }
-        return $this ->render('product/addMount.html.twig',[
-            'form' => $form->createView(),
-        ]);
-    }
+    
 
     /**
-     * @Route("/addShape", name="Shape_add")
+     * @Route("/addShape", name="shape_add")
      */
     public function addShape(Request $request, EntityManagerInterface $manager)
     {
@@ -159,7 +160,7 @@ class ProductController extends AbstractController
         $form = $this ->createForm(AddShapeType::class, $shape);
         $form ->handleRequest($request);
 
-        if($form->isSubmited() && $form->isValid())
+        if($form->isSubmitted() && $form->isValid())
         {
             $manager->persist($shape);
             $manager->flush();
@@ -170,23 +171,40 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/addStyle", name="Syle_add")
+     * @Route("/addStyle", name="style_add")
      */
     public function addStyle(Request $request, EntityManagerInterface $manager)
     {
         $style = new Style();
-        $form = $this->createForm(AddShpeType::class, $style);
+        $form = $this->createForm(AddStyleType::class, $style);
         $form ->handleRequest($request);
 
-        if($form ->isSubmited()&& $form->isValid())
+        if($form ->isSubmitted()&& $form->isValid())
         {
-            $manager->persist($style);
+           $manager->persist($style);
             $manager->flush();
-
-            return $this -> render('product/addStyle.html.twig', [
-                'form' => $form->createView(),
-            ]);
         }
+        return $this -> render('product/addStyle.html.twig', [
+            'form' => $form->createView(),
+       ]);
+    }
 
+    /**
+     * @Route("/addMount", name="Mount_add")
+     */
+    public function addMount(Request $request, EntityManagerInterface $manager)
+    {
+        $mount = new Mount();
+        $form = $this->createForm(AddMountType::class, $mount);
+        $form ->handleRequest($request);
+
+        if($form ->isSubmitted()&& $form->isValid())
+        {
+            $manager->persist($mount);
+            $manager->flush();
+        }
+        return $this -> render('product/addMount.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

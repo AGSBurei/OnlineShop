@@ -1,0 +1,18 @@
+{{ form_start(form, {class: 'filter'}) }}
+{{ form_row(form.q) }}
+<h4>Marque</h4>
+{{ form_row(form.Brand) }}
+<h4>Style</h4>
+{{ form_row(form.style)}}
+<h4>Genre</h4>
+{{ form_row(form.gender)}}
+<h4>Forme</h4>
+{{ form_row(form.shape) }}
+<h4>Couleur</h4>
+{{ form_row(form.color) }}
+<h4>Materiaux</h4>
+{{ form_row(form.material) }}
+
+<button type ="submit" class="btn btn-primary w-100">Filtrer</button>
+
+{{ form_end(form) }}

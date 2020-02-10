@@ -1,23 +1,50 @@
+{% extends 'base2.html.twig' %}
+
 {% block head %}
 <title>OWL Eyewear - Création de page</title>
 <link rel="icon" type="image/x-icon" href="{{ asset('/build/images/favicon.5ee79b31.ico') }}"/>
-{% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
+
 {% endblock %}
 {% block body %}
     <div class="addItem">
         <div class="container">
             {{ form_start(form) }}
+            <div class="row">
             {{ form_row(form.title) }}
+            </div>
+            <div class="row">
             {{ form_row(form.image) }}
+            </div>
+            <div class="row">
             {{ form_row(form.price) }}
+            </div>
+            <div class="row">
             {{ form_row(form.reference) }}
+            </div>
+            <div class="row">
             {{ form_row(form.gender) }}
+            </div>
+            <div class="row">
             {{ form_row(form.brand) }}
+            </div>
+            <div class="row">
             {{ form_row(form.material) }}
+            </div>
+            <div class="row">
             {{ form_row(form.color) }}
+            </div>
+            <div class="row">
             {{ form_row(form.shape) }}
-            {{ form_row(form.styles) }}
-            {{ form_row(form.mountType) }}
+            </div>
+            <div class="row">
+            {{ form_row(form.style) }}
+            </div>
+            <div class="row">
+            {{ form_row(form.mount) }}
+            </div>
+            <div class="row">
+            <button type="submit" class="btn btn-success">Valider</button>
+            </div>
             {{ form_end(form)}}
         </div>
     </div>

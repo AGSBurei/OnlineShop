@@ -18,7 +18,6 @@ class CartController extends AbstractController
             'items' => $cartService->getFullCart(),
             'total' => $cartService->getTotal()
         ]);
-
     }
         
     /**

@@ -24,13 +24,13 @@ class Style
     private $label;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="styles")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="style")
      */
-    private $products;
+    private $product;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->product = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,15 +53,16 @@ class Style
     /**
      * @return Collection|Product[]
      */
-    public function getProducts(): Collection
+    public function getProduct(): Collection
     {
-        return $this->products;
+        return $this->product;
     }
 
     public function addProduct(Product $product): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
+        if (!$this->product->contains($product)) {
+            $this->product[] = $product;
+            $product->setStyle($this);
         }
 
         return $this;
@@ -69,10 +70,18 @@ class Style
 
     public function removeProduct(Product $product): self
     {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
+        if ($this->product->contains($product)) {
+            $this->product->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getStyle() === $this) {
+                $product->setStyle(null);
+            }
         }
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->label;
     }
 }

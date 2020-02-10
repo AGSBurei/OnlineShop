@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ShapeType extends AbstractType
+class AddShapeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,4 +22,6 @@ class ShapeType extends AbstractType
             'data_class' => Shape::class,
         ]);
     }
+
+   
 }
